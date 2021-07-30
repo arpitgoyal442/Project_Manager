@@ -1,10 +1,20 @@
 import React from 'react'
 import HomeBodyAdd from './HomeBodyAdd'
 import HomeBodyBoard from './HomeBodyBoard'
+import Popup from './Popup';
+
+
 
  function HomeBody() {
 
     const[arr,setarr]=React.useState([]);
+    const[boardtitle , setTitle]=React.useState("");
+
+    const [isOpen, setIsOpen] = React.useState(false);
+ 
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
+  }
 
     const divstyle={
 
@@ -24,12 +34,19 @@ import HomeBodyBoard from './HomeBodyBoard'
         fontSize:"30px"
     }
 
+    // To create New Board
     function handleClickAdd(){
-        setarr( (pre)=>{
-             pre.push(pre.length+1);
-             return pre;
-        } )
+        
+        setIsOpen(!isOpen);
     }
+
+    // To take Title
+    function handleChangeTitle(event){
+
+        setTitle(event.target.value);
+    }
+
+
 
     return (
         <div style={divstyle}>
@@ -37,9 +54,21 @@ import HomeBodyBoard from './HomeBodyBoard'
             <ul>
             <li style={listyle} onClick={handleClickAdd} ><HomeBodyAdd/></li>
             <li style={listyle} ><HomeBodyBoard/></li>
-            {arr.map( ()=> <li>Hello</li> )}
+            
+            {arr.map( ()=><li style={listyle} ><HomeBodyBoard/></li> )}
                
             </ul>
+
+            
+    {isOpen && <Popup
+      content={<>
+        <b>Title</b>
+        <input type="text" onChange={handleChangeTitle}  placeholder="Enter Board's Name" value={boardtitle}/>
+        <button >Make Board</button>
+      </>}
+      handleClose={handleClickAdd}
+    />}
+
         </div>
     )
 }
